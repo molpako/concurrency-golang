@@ -4,11 +4,15 @@
 // ある時だけ. 例えば range ループを終了するという場合.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func fibonacci(n int, c chan int) {
 	x, y := 0, 1
 	for i := 0; i < n; i++ {
+		time.Sleep(1 * time.Second)
 		c <- x
 		x, y = y, y+x
 	}
