@@ -19,7 +19,8 @@ func fibonacci(n int, c chan int) {
 func main() {
 
 	// バッファとして使うチャネルの生成, 第2引数にバッファの長さを指定
-	ch1 := make(chan int, 10)
+	n := 10
+	ch1 := make(chan int, n)
 
 	go fibonacci(cap(ch1), ch1)
 
@@ -37,7 +38,7 @@ func main() {
 
 	// 受信する値がない、かつチャネルが閉じられているなら
 	// ok は false になる
-	for i := 0; i < 11; i++ {
+	for i := 0; i < n+1; i++ {
 		v, ok = <-ch2
 		fmt.Printf("値: %v, received: %v\n", v, ok)
 	}
