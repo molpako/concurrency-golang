@@ -12,7 +12,7 @@ import (
 func fibonacci(n int, c chan int) {
 	x, y := 0, 1
 	for i := 0; i < n; i++ {
-		time.Sleep(1 * time.Second)
+		time.Sleep(100 * time.Millisecond)
 		c <- x
 		x, y = y, y+x
 	}
