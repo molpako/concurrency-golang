@@ -17,7 +17,7 @@ func main() {
 	// マップとスライスのようにチャネルは使う前に生成する
 	c := make(chan int)
 
-	// 2つのgoroutine間で作業を分配する。両方の計算が終わると
+	// 2つのgoroutine間で作業を分配する。
 	go sum(s[:len(s)/2], c)
 	go sum(s[len(s)/2:], c)
 
