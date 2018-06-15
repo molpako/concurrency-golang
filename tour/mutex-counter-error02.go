@@ -5,7 +5,6 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 type SafeCounter struct {
@@ -26,9 +25,7 @@ func (c *SafeCounter) Inc(key string) {
 // Value は指定されたキーのカウントの値を返す
 // mutexがUnlockされることを保証するために defer を使うこともできる
 func (c *SafeCounter) Value(key string) int {
-	c.mux.Lock()
-
-	defer c.mux.Unlock()
+	// ロックせずに 値を取りにいくと 同時マップアクセスエラーが起きる
 	return c.v[key]
 }
 
@@ -36,8 +33,7 @@ func main() {
 	c := SafeCounter{v: make(map[string]int)}
 	for i := 0; i < 1000; i++ {
 		go c.Inc("somekey")
+		fmt.Println(c.Value("somekey"))
 	}
 
-	time.Sleep(time.Second)
-	fmt.Println(c.Value("somekey"))
 }

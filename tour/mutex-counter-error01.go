@@ -3,11 +3,10 @@
 package main
 
 import (
-	"fmt"
 	"sync"
-	"time"
 )
 
+// SafeCounter は同時に安全に使用できる
 type SafeCounter struct {
 	v   map[string]int
 	mux sync.Mutex
@@ -16,11 +15,8 @@ type SafeCounter struct {
 // Inc は指定されたキーのカウンタをインクリメントする
 // Lock と Unlock で囲むことで排他制御で実行するコードを定義できる
 func (c *SafeCounter) Inc(key string) {
-	c.mux.Lock()
-
-	// ロックしたので一度に一つのgoroutineがSafeCounterのmapにアクセスできる
+	// ロックせずにインクリメントするとエラーが起きる
 	c.v[key]++
-	c.mux.Unlock()
 }
 
 // Value は指定されたキーのカウントの値を返す
@@ -34,10 +30,10 @@ func (c *SafeCounter) Value(key string) int {
 
 func main() {
 	c := SafeCounter{v: make(map[string]int)}
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 100; i++ {
 		go c.Inc("somekey")
 	}
 
-	time.Sleep(time.Second)
-	fmt.Println(c.Value("somekey"))
+	//time.Sleep(time.Second)
+	//fmt.Println(c.Value("somekey"))
 }
