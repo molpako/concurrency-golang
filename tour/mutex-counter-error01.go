@@ -6,7 +6,6 @@ import (
 	"sync"
 )
 
-// SafeCounter は同時に安全に使用できる
 type SafeCounter struct {
 	v   map[string]int
 	mux sync.Mutex
